@@ -23,7 +23,7 @@ def get_data():
         # Získání historických dat (Close)
         current_close = yf.Ticker(ticker).history(period='1d', interval='1m')["Close"].iloc[-1]
         history = yf.Ticker(ticker).history(period='2d')["Close"]
-        previous_close = history.iloc[-2] if len(history) > 1 else 1419.08 ## problem u prazske burzy z nejakoho duvodu zmizela historicka data
+        previous_close = history.iloc[-2] if len(history) > 1 else 1422.34 ## problem u prazske burzy z nejakoho duvodu zmizela historicka data
         # Výpočet procentuální změny
         percentage_change = ((current_close - previous_close) / previous_close) * 100
 
