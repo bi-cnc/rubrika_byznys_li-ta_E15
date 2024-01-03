@@ -4,6 +4,14 @@ import pandas as pd
 
 st.markdown("""
 <style>
+    body {
+        font-size: 0.5%;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<style>
     [data-testid="stMetricValue"] {
         font-size: 20px;
     }
