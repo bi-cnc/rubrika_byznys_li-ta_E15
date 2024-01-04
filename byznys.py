@@ -47,6 +47,7 @@ def get_data():
 columns1 = st.empty()
 columns2 = st.empty()
 display_close = st.empty()  # vytváříme prázdný objekt k zobrazení hodnoty 'Close'
+display_next = st.empty()  # vytváříme prázdný objekt k zobrazení hodnoty 'Close'
 
 
 while True:
