@@ -59,7 +59,7 @@ while True:
 
     display_close.markdown("<strong>EUR:</strong> " + data['Close'].iloc[0] + "&nbsp;&nbsp;&nbsp;&nbsp;<strong>USD:</strong> "
                             + data['Close'].iloc[1] + "&nbsp;&nbsp;&nbsp;&nbsp;<strong>PX - Pražská burza:</strong> " 
-                            + data['Close'].iloc[2] + "&nbsp;&nbsp;&nbsp;&nbsp;<strong>ČEZ":</strong> " 
+                            + data['Close'].iloc[2] + "&nbsp;&nbsp;&nbsp;&nbsp;<strong>ČEZ:"</strong> " 
                             + data['Close'].iloc[3], unsafe_allow_html=True)
 
 
