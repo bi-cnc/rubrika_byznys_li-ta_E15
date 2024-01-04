@@ -28,11 +28,9 @@ def get_data():
     return data
 
 
-
 columns1 = st.empty()
 columns2 = st.empty()
 display_close = st.empty()  # vytváříme prázdný objekt k zobrazení hodnoty 'Close'
-display_next = st.empty()  # vytváříme prázdný objekt k zobrazení hodnoty 'Close'
 
 
 while True:
@@ -45,9 +43,10 @@ while True:
 
     display_close.markdown("<strong>EUR:</strong> " + data['Close'].iloc[0] + " CZK" + "&nbsp;&nbsp;&nbsp;&nbsp;<strong>USD:</strong> "
                             + data['Close'].iloc[1] + " CZK" + "&nbsp;&nbsp;&nbsp;&nbsp;<strong>PX - Pražská burza:</strong> "
-                            + data['Close'].iloc[2] + " CZK", unsafe_allow_html=True)
+                            + data['Close'].iloc[2] + " CZK" + "<strong>ČEZ:</strong> " 
+                            + data['Close'].iloc[3] + " CZK" , unsafe_allow_html=True)
 
-    display_next.markdown("<strong>ČEZ:</strong> " 
-                            + data['Close'].iloc[3] + " CZK", unsafe_allow_html=True)
+
+
 
 
