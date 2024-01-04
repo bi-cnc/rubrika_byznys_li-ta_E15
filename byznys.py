@@ -41,10 +41,10 @@ while True:
     # Převod na string s oddělovači tisíců
     data["Close"] = data["Close"].apply(lambda x: '{:,}'.format(x).replace(',', ' '))
 
-    display_close.markdown("<strong>EUR:</strong> " + data['Close'].iloc[0] + " CZK" + "&nbsp;&nbsp;&nbsp;&nbsp;<strong>USD:</strong> "
-                            + data['Close'].iloc[1] + " CZK" + "&nbsp;&nbsp;&nbsp;&nbsp;<strong>PX - Pražská burza:</strong> "
-                            + data['Close'].iloc[2] + " CZK" + "<strong>ČEZ:</strong> " 
-                            + data['Close'].iloc[3] + " CZK" , unsafe_allow_html=True)
+    display_close.markdown("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "<strong>EUR</strong> " + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "&nbsp;&nbsp;&nbsp;&nbsp;<strong>USD</strong><br>"
+                           + data['Close'].iloc[0] + " CZK" + "&nbsp;&nbsp;&nbsp;&nbsp;" + data['Close'].iloc[1] + " CZK", unsafe_allow_html=True)
+    
+    
 
 
 
