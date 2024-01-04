@@ -46,6 +46,8 @@ def get_data():
 
 columns1 = st.empty()
 columns2 = st.empty()
+display_close = st.empty()  # vytváříme prázdný objekt k zobrazení hodnoty 'Close'
+
 
 while True:
     data = get_data()
@@ -55,14 +57,9 @@ while True:
     # Převod na string s oddělovači tisíců
     data["Close"] = data["Close"].apply(lambda x: '{:,}'.format(x).replace(',', ' '))
 
-    col1, col2, col3, col4 = columns1.columns(4)
-    col1.metric("EUR", data['Close'].iloc[0] + " CZK", data['Change%'].iloc[0] + "%")
-    col2.metric("USD", data['Close'].iloc[1] + " CZK", data['Change%'].iloc[1] + "%")
-    col3.metric("PX - Pražská burza", data['Close'].iloc[2] + " CZK", data['Change%'].iloc[2] + "%")
-    col4.metric("ČEZ", data['Close'].iloc[3] + " CZK", data['Change%'].iloc[3] + "%")
+    display_close.markdown("<strong>EUR:</strong> " + data['Close'].iloc[0] + "&nbsp;&nbsp;&nbsp;&nbsp;<strong>USD:</strong> "
+                            + data['Close'].iloc[1] + "&nbsp;&nbsp;&nbsp;&nbsp;<strong>PX - Pražská burza:</strong> " 
+                            + data['Close'].iloc[2], unsafe_allow_html=True)
 
-    col1, col2, col3, col4 = columns2.columns(4)
-    col1.metric("Ropa Brent", data['Close'].iloc[4] + " $", data['Change%'].iloc[4] + "%")
-    col2.metric("S&P 500", data['Close'].iloc[5] + " $", data['Change%'].iloc[5] + "%")
-    col3.metric("NASDAQ", data['Close'].iloc[7] + " $", data['Change%'].iloc[7] + "%")
-    col4.metric("Bitcoin", data['Close'].iloc[6] + " $", data['Change%'].iloc[6] + "%")
+
+
