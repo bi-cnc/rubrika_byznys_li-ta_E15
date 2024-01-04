@@ -4,22 +4,7 @@ import streamlit as st
 import yfinance as yf
 import pandas as pd
 
-st.markdown("""
-<style>
-    body {
-        font-size: 0.5%;
-    }
-</style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-<style>
-    [data-testid="stMetricValue"] {
-        font-size: 20px;
-    }
-</style>
-""", unsafe_allow_html=True)
-
+st.set_page_config(layout='centered')
 
 def get_data():
     # Seznam tickrů
