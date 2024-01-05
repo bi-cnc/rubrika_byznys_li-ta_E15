@@ -62,6 +62,6 @@ while True:
     data['Change%'] = data['Change%'].astype(str)
 
     display_close.markdown("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "<strong>EUR</strong> " + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "&nbsp;&nbsp;&nbsp;&nbsp;<strong>USD</strong>"
-                           + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>PX - Pražská burza</strong>" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>ČEZ</strong><br>" 
+                           + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>PX - Pražská burza</strong>" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>ČEZ</strong>" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Ropa Brent</strong><br>"
                            + data['Close'].iloc[0] + " CZK" + "&nbsp;&nbsp;&nbsp;&nbsp;" + data['Close'].iloc[1] + " CZK" + "<br>" + change_symbol + " " + data['Change%'].iloc[0] + "%", unsafe_allow_html=True)
 
