@@ -1,27 +1,31 @@
 
-
 import streamlit as st
 import yfinance as yf
 import pandas as pd
 
 st.set_page_config(layout='centered')
 
+# Custom CSS pro horizontální scrolování
+st.markdown("""
+<style>
+    .scrollable {
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# Ostatní CSS styly
 st.markdown("""
 <style>
     body {
         font-size: 0.5%;
     }
-</style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-<style>
     [data-testid="stMetricValue"] {
         font-size: 20px;
     }
 </style>
 """, unsafe_allow_html=True)
-
 
 def get_data():
     # Seznam tickrů
@@ -45,8 +49,6 @@ def get_data():
     return data
 
 
-columns1 = st.empty()
-columns2 = st.empty()
 display_close = st.empty()  # vytváříme prázdný objekt k zobrazení hodnoty 'Close'
 
 
@@ -61,7 +63,9 @@ while True:
     change_symbol = "🔺" if data['Change%'].iloc[0] > 0 else "🔻"
     data['Change%'] = data['Change%'].astype(str)
 
+    # Umístění obsahu do scrollovatelného kontejneru
+    display_close.markdown('<div class="scrollable">', unsafe_allow_html=True)
     display_close.markdown("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "<strong>EUR</strong> " + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "&nbsp;&nbsp;&nbsp;&nbsp;<strong>USD</strong>"
                            + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>PX - Pražská burza</strong>" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>ČEZ</strong>" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Ropa Brent</strong><br>"
                            + data['Close'].iloc[0] + " CZK" + "&nbsp;&nbsp;&nbsp;&nbsp;" + data['Close'].iloc[1] + " CZK" + "<br>" + change_symbol + " " + data['Change%'].iloc[0] + "%", unsafe_allow_html=True)
-
+    display_close.markdown('</div>', unsafe_allow_html=True)
