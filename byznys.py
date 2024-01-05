@@ -3,29 +3,21 @@ import streamlit as st
 import yfinance as yf
 import pandas as pd
 
-st.set_page_config(layout='centered')
 
-# Custom CSS pro horizontální scrolování
 st.markdown("""
 <style>
-    .scrollable {
+    .horizontal-scroll {
         overflow-x: auto;
+        display: flex;
         white-space: nowrap;
-    }
-</style>
-""", unsafe_allow_html=True)
-
-# Ostatní CSS styly
-st.markdown("""
-<style>
-    body {
-        font-size: 0.5%;
     }
     [data-testid="stMetricValue"] {
         font-size: 20px;
     }
 </style>
 """, unsafe_allow_html=True)
+
+
 
 def get_data():
     # Seznam tickrů
@@ -49,23 +41,32 @@ def get_data():
     return data
 
 
-display_close = st.empty()  # vytváříme prázdný objekt k zobrazení hodnoty 'Close'
+# Vytvoření kontejnerů pro sloupce, které budou aktualizovány
+columns1 = st.empty()
+columns2 = st.empty()
 
+# Vytvoření kontejneru pro metriky s horizontálním posouváním
+with st.container():
+    st.markdown('<div class="horizontal-scroll">', unsafe_allow_html=True)
 
-while True:
-    data = get_data()
-    data["Close"] = data["Close"].round(2)
-    data["Change%"] = data["Change%"].round(2).astype(str)
+    while True:
+        data = get_data()
+        data["Close"] = data["Close"].round(2)
+        data["Change%"] = data["Change%"].round(2).astype(str)
+        data["Close"] = data["Close"].apply(lambda x: '{:,}'.format(x).replace(',', ' '))
 
-    # Převod na string s oddělovači tisíců
-    data["Close"] = data["Close"].apply(lambda x: '{:,}'.format(x).replace(',', ' '))
-    data['Change%'] = data['Change%'].astype(float)
-    change_symbol = "🔺" if data['Change%'].iloc[0] > 0 else "🔻"
-    data['Change%'] = data['Change%'].astype(str)
+        with columns1.container():
+            col1, col2, col3, col4 = st.columns(4)
+            col1.metric("EUR", data['Close'].iloc[0] + " CZK", data['Change%'].iloc[0] + "%")
+            col2.metric("USD", data['Close'].iloc[1] + " CZK", data['Change%'].iloc[1] + "%")
+            col3.metric("PX - Pražská burza", data['Close'].iloc[2] + " CZK", data['Change%'].iloc[2] + "%")
+            col4.metric("ČEZ", data['Close'].iloc[3] + " CZK", data['Change%'].iloc[3] + "%")
 
-    # Umístění obsahu do scrollovatelného kontejneru
-    display_close.markdown('<div class="scrollable">', unsafe_allow_html=True)
-    display_close.markdown("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "<strong>EUR</strong> " + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "&nbsp;&nbsp;&nbsp;&nbsp;<strong>USD</strong>"
-                           + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>PX - Pražská burza</strong>" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>ČEZ</strong>" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Ropa Brent</strong><br>"
-                           + data['Close'].iloc[0] + " CZK" + "&nbsp;&nbsp;&nbsp;&nbsp;" + data['Close'].iloc[1] + " CZK" + "<br>" + change_symbol + " " + data['Change%'].iloc[0] + "%", unsafe_allow_html=True)
-    display_close.markdown('</div>', unsafe_allow_html=True)
+        with columns2.container():
+            col5, col6, col7, col8 = st.columns(4)
+            col5.metric("Ropa Brent", data['Close'].iloc[4] + " $", data['Change%'].iloc[4] + "%")
+            col6.metric("S&P 500", data['Close'].iloc[5] + " $", data['Change%'].iloc[5] + "%")
+            col7.metric("NASDAQ", data['Close'].iloc[7] + " $", data['Change%'].iloc[7] + "%")
+            col8.metric("Bitcoin", data['Close'].iloc[6] + " $", data['Change%'].iloc[6] + "%")
+
+            st.markdown('</div>', unsafe_allow_html=True)
