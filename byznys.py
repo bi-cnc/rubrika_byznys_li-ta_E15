@@ -6,6 +6,23 @@ import pandas as pd
 
 st.set_page_config(layout='centered')
 
+st.markdown("""
+<style>
+    body {
+        font-size: 0.5%;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<style>
+    [data-testid="stMetricValue"] {
+        font-size: 20px;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+
 def get_data():
     # Seznam tickrů
     tickers = ["EURCZK=X", "CZK=X", "FPXAA.PR", "CEZ.PR", "BZ=F", "^GSPC", "BTC-USD", "^IXIC"]
@@ -40,13 +57,10 @@ while True:
 
     # Převod na string s oddělovači tisíců
     data["Close"] = data["Close"].apply(lambda x: '{:,}'.format(x).replace(',', ' '))
+    data['Change%'] = data['Change%'].astype(float)
+    change_symbol = "🔺" if data['Change%'].iloc[0] > 0 else "🔻"
+    data['Change%'] = data['Change%'].astype(str)
 
     display_close.markdown("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "<strong>EUR</strong> " + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "&nbsp;&nbsp;&nbsp;&nbsp;<strong>USD</strong><br>"
-                           + data['Close'].iloc[0] + " CZK" + "&nbsp;&nbsp;&nbsp;&nbsp;" + data['Close'].iloc[1] + " CZK", unsafe_allow_html=True)
-    
-    
-
-
-
-
+                           + data['Close'].iloc[0] + " CZK" + "&nbsp;&nbsp;&nbsp;&nbsp;" + data['Close'].iloc[1] + " CZK" + "<br>" + change_symbol + " " + data['Change%'].iloc[0] + "%", unsafe_allow_html=True)
 
