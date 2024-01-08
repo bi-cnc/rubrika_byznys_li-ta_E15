@@ -6,6 +6,9 @@ import pandas as pd
 
 # CSS kód pro změnu barvy pozadí
 
+[theme]
+backgroundColor="#000000"
+
 st.set_page_config(layout="centered")
 
 st.markdown("""
