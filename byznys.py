@@ -3,6 +3,7 @@
 import streamlit as st
 import yfinance as yf
 import pandas as pd
+import time
 
 # CSS kód pro změnu barvy pozadí
 
@@ -67,4 +68,5 @@ while True:
     col2.metric("S&P 500", data['Close'].iloc[5] + " $", data['Change%'].iloc[5] + "%")
     col3.metric("NASDAQ", data['Close'].iloc[7] + " $", data['Change%'].iloc[7] + "%")
     col4.metric("Bitcoin", data['Close'].iloc[6] + " $", data['Change%'].iloc[6] + "%")
+    time.sleep(60)
 
