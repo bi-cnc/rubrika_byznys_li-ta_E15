@@ -5,24 +5,6 @@ import yfinance as yf
 import pandas as pd
 
 # CSS kód pro změnu barvy pozadí
-css = """
-<style>
-    body {
-        background-color: #F6F6F6;
-    }
-</style>
-"""
-
-# Vložení CSS do aplikace
-st.markdown(css, unsafe_allow_html=True)
-
-st.markdown("""
-<style>
-    body {
-        font-size: 0.5%;
-    }
-</style>
-""", unsafe_allow_html=True)
 
 st.markdown("""
 <style>
