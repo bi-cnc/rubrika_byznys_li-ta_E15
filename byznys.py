@@ -17,6 +17,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+@st.cache_data
 def get_data():
     # Seznam tickrů
     tickers = ["EURCZK=X", "CZK=X", "FPXAA.PR", "CEZ.PR", "BZ=F", "^GSPC", "BTC-USD", "^IXIC"]
@@ -44,7 +45,7 @@ columns1 = st.empty()
 columns2 = st.empty()
 display_close = st.empty()  # vytváříme prázdný objekt k zobrazení hodnoty 'Close'
 
-
+@st.cache_data
 while True:
     data = get_data()
     data["Close"] = data["Close"].round(2)
