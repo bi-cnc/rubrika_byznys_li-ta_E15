@@ -6,6 +6,8 @@ import pandas as pd
 
 # CSS kód pro změnu barvy pozadí
 
+st.set_page_config(layout="wide")
+
 st.markdown("""
 <style>
     [data-testid="stMetricValue"] {
@@ -65,3 +67,4 @@ while True:
     col2.metric("S&P 500", data['Close'].iloc[5] + " $", data['Change%'].iloc[5] + "%")
     col3.metric("NASDAQ", data['Close'].iloc[7] + " $", data['Change%'].iloc[7] + "%")
     col4.metric("Bitcoin", data['Close'].iloc[6] + " $", data['Change%'].iloc[6] + "%")
+
