@@ -17,7 +17,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-@st.cache
 def get_data():
     # Seznam tickrů
     tickers = ["EURCZK=X", "CZK=X", "FPXAA.PR", "CEZ.PR", "BZ=F", "^GSPC", "BTC-USD", "^IXIC"]
