@@ -70,14 +70,14 @@ while True:
     data["Close"] = data["Close"].apply(lambda x: '{:,}'.format(x).replace(',', ' '))
 
     # Upravené rozložení sloupců s přidaným prázdným sloupcem
-    col1, col2,spacer1, col3, col4 = columns1.columns(5)
+    col1, col2, col3, col4 = columns1.columns(4)
     col1.metric("EUR", data['Close'].iloc[0] + " CZK", data['Change%'].iloc[0] + "%")
     # Prázdný sloupec (spacer1) pro oddělení
     col2.metric("USD", data['Close'].iloc[1] + " CZK", data['Change%'].iloc[1] + "%")
     col3.metric("PX - Pražská burza", data['Close'].iloc[2] + " CZK", data['Change%'].iloc[2] + "%")
     col4.metric("ČEZ", data['Close'].iloc[3] + " CZK", data['Change%'].iloc[3] + "%")
 
-    col1, col2,spacer3, col3, col4 = columns2.columns(5)
+    col1, col2, col3, col4 = columns2.columns(4)
     col1.metric("Ropa Brent", data['Close'].iloc[4] + " $", data['Change%'].iloc[4] + "%")
     # Prázdný sloupec (spacer2) pro oddělení
     col2.metric("S&P 500", data['Close'].iloc[5] + " $", data['Change%'].iloc[5] + "%")
