@@ -4,35 +4,6 @@ import streamlit as st
 import yfinance as yf
 import pandas as pd
 
-# CSS kód pro změnu barvy pozadí
-css = """
-<style>
-    body {
-        background-color: #F6F6F6;
-    }
-</style>
-"""
-
-# Vložení CSS do aplikace
-st.markdown(css, unsafe_allow_html=True)
-
-st.markdown("""
-<style>
-    body {
-        font-size: 0.5%;
-    }
-</style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-<style>
-    [data-testid="stMetricValue"] {
-        font-size: 20px;
-    }
-</style>
-""", unsafe_allow_html=True)
-
-
 def get_data():
     # Seznam tickrů
     tickers = ["EURCZK=X", "CZK=X", "FPXAA.PR", "CEZ.PR", "BZ=F", "^GSPC", "BTC-USD", "^IXIC"]
