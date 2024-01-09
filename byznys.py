@@ -2,6 +2,7 @@ import streamlit as st
 import yfinance as yf
 import pandas as pd
 import time
+import requests
 
 # CSS kód pro změnu barvy pozadí
 
@@ -18,17 +19,32 @@ st.markdown("""
 @st.cache_data
 def get_data():
     # Seznam tickrů
-    tickers = ["EURCZK=X", "CZK=X", "FPXAA.PR", "CEZ.PR", "BZ=F", "^GSPC", "BTC-USD", "^IXIC"]
+    tickers = ["EURCZK=X", "CZK=X", "FPXAA.PR", "CEZ.PR", "BZ=F", "^GSPC","^IXIC", "BTC-USD"]
 
     # Vytvoření prázdného dataframeu
     data = pd.DataFrame()
 
+    # nejriv stahnu nova data za vcerejsek (uzaviraci hodnota)
+    source_website = "https://finance.yahoo.com/quote/FPXAA.PR?p=FPXAA.PR&.tsrc=fin-srch"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0",
+        "Accept-Encoding": "*",
+        "Connection": "keep-alive"
+    }
+    # Make a GET request to fetch the raw HTML content
+    html_content = requests.get(source_website, headers=headers).text
+    source = pd.read_html(html_content); source = source[0]
+    scraped = pd.DataFrame(source)
+    scraped = scraped[1].iloc[0]
+
     # Procházení jednotlivých tickerů
     for ticker in tickers:
+
         # Získání historických dat (Close)
         current_close = yf.Ticker(ticker).history(period='1d', interval='1m')["Close"].iloc[-1]
         history = yf.Ticker(ticker).history(period='5d')["Close"]
-        previous_close = history.iloc[-2] if len(history) > 1 else 1422.34 ## problem u prazske burzy z nejakoho duvodu zmizela historicka data
+        previous_close = history.iloc[-2] if len(history) > 1 else scraped ## problem u prazske burzy z nejakoho duvodu zmizela historicka data
+        
         # Výpočet procentuální změny
         percentage_change = ((current_close - previous_close) / previous_close) * 100
 
@@ -36,7 +52,6 @@ def get_data():
         data = pd.concat([data, pd.DataFrame({"Ticker": [ticker], "Close": [current_close], "previ_close": [previous_close],"Change%": [percentage_change]})])
 
     return data
-
 
 
 columns1 = st.empty()
