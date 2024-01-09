@@ -83,7 +83,7 @@ trend_column = st.column_config.LineChartColumn(label="Trend v posledních 6 mě
 data = data[["Ticker","Close","6mo_history"]]
 
 
-st.dataframe(data,width=650, hide_index=True,column_config={"Ticker":ticker_column,"Close": price_column,"6mo_history": trend_column},height=285)  
+st.dataframe(data,width=650, hide_index=True,column_config={"Ticker":ticker_column,"Close": price_column,"6mo_history": trend_column},height=282)  
 
 
 
