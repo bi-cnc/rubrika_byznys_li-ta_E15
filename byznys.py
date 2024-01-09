@@ -7,15 +7,6 @@ import requests
 
 # CSS kód pro změnu barvy pozadí
 
-st.write('''<style>
-
-[data-testid="column"] {
-    width: calc(33.3333% - 1rem) !important;
-    flex: 1 1 calc(33.3333% - 1rem) !important;
-    min-width: calc(33% - 1rem) !important;
-}
-</style>''', unsafe_allow_html=True)
-
 st.markdown("""
 <style>
     [data-testid="stMetricValue"] {
@@ -77,14 +68,14 @@ while True:
     # Upravené rozložení sloupců s přidaným prázdným sloupcem
     col1, col2, col3, col4 = columns1.columns(4)
     col1.metric("EUR", data['Close'].iloc[0] + " CZK", data['Change%'].iloc[0] + "%")
-    # Prázdný sloupec (spacer1) pro oddělení
     col2.metric("USD", data['Close'].iloc[1] + " CZK", data['Change%'].iloc[1] + "%")
     col3.metric("PX - Pražská burza", data['Close'].iloc[2] + " CZK", data['Change%'].iloc[2] + "%")
+
+    
     col4.metric("ČEZ", data['Close'].iloc[3] + " CZK", data['Change%'].iloc[3] + "%")
 
     col1, col2, col3, col4 = columns2.columns(4)
     col1.metric("Ropa Brent", data['Close'].iloc[4] + " $", data['Change%'].iloc[4] + "%")
-    # Prázdný sloupec (spacer2) pro oddělení
     col2.metric("S&P 500", data['Close'].iloc[5] + " $", data['Change%'].iloc[5] + "%")
     col3.metric("NASDAQ", data['Close'].iloc[7] + " $", data['Change%'].iloc[7] + "%")
     col4.metric("Bitcoin", data['Close'].iloc[6] + " $", data['Change%'].iloc[6] + "%")
