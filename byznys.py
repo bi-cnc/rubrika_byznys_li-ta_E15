@@ -7,8 +7,6 @@ import requests
 
 # CSS kód pro změnu barvy pozadí
 
-st.set_page_config(layout="centered")
-
 st.markdown("""
 <style>
     [data-testid="stMetricValue"] {
