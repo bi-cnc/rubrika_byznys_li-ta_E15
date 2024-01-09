@@ -1,37 +1,22 @@
 import streamlit as st
 import yfinance as yf
 import pandas as pd
-import time
 import requests
 
-# CSS kód pro změnu barvy pozadí
-
-st.set_page_config(layout="centered")
-
-st.markdown("""
-<style>
-    [data-testid="stMetricValue"] {
-        font-size: 20px;
-    }
-</style>
-""", unsafe_allow_html=True)
-
-@st.cache_data
 def get_data():
-    # Seznam tickrů
-    tickers = ["EURCZK=X", "CZK=X", "FPXAA.PR", "CEZ.PR", "BZ=F", "^GSPC","^IXIC", "BTC-USD"]
+    # Seznam tickerů
+    tickers = ["EURCZK=X", "CZK=X", "CEZ.PR", "BZ=F", "^GSPC", "^IXIC", "BTC-USD"] ## "FPXAA.PR", Prazska burza ma problem s historickymi daty na yahoo finance, ozkousim to bez a pak ji kdyztak pridam
 
-    # Vytvoření prázdného dataframeu
+    # Vytvoření prázdného DataFrame
     data = pd.DataFrame()
 
-    # nejriv stahnu nova data za vcerejsek (uzaviraci hodnota)
+    # Stažení nových dat pro FPXAA.PR (uzavírací hodnota)
     source_website = "https://finance.yahoo.com/quote/FPXAA.PR?p=FPXAA.PR&.tsrc=fin-srch"
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0",
         "Accept-Encoding": "*",
         "Connection": "keep-alive"
     }
-    # Make a GET request to fetch the raw HTML content
     html_content = requests.get(source_website, headers=headers).text
     source = pd.read_html(html_content); source = source[0]
     scraped = pd.DataFrame(source)
@@ -39,45 +24,55 @@ def get_data():
 
     # Procházení jednotlivých tickerů
     for ticker in tickers:
+        ticker_obj = yf.Ticker(ticker)
+        current_close = ticker_obj.history(period='1d', interval='1m')["Close"].iloc[-1]
+        history = ticker_obj.history(period='5d')["Close"]
 
-        # Získání historických dat (Close)
-        current_close = yf.Ticker(ticker).history(period='1d', interval='1m')["Close"].iloc[-1]
-        history = yf.Ticker(ticker).history(period='5d')["Close"]
-        previous_close = history.iloc[-2] if len(history) > 1 else scraped ## problem u prazske burzy z nejakoho duvodu zmizela historicka data
-        
+        # Získání historických dat za posledních 6 měsíců a výběr každé třetí hodnoty
+        six_months_history = ticker_obj.history(period='6mo')["Close"].iloc[::3].round(2).tolist()
+
+        # Použití scraped dat pro FPXAA.PR, jinak normální postup
+        previous_close = scraped if ticker == "FPXAA.PR" else history.iloc[-2] if len(history) > 1 else current_close
+
         # Výpočet procentuální změny
         percentage_change = ((current_close - previous_close) / previous_close) * 100
 
-        # Přidání řádku do dataframeu
-        data = pd.concat([data, pd.DataFrame({"Ticker": [ticker], "Close": [current_close], "previ_close": [previous_close],"Change%": [percentage_change]})])
+        # Přidání řádku do DataFrame
+        data = pd.concat([data, pd.DataFrame({
+            "Ticker": [ticker], 
+            "Close": [current_close], 
+            "previ_close": [previous_close], 
+            "Change%": [percentage_change], 
+            "6mo_history": [six_months_history]
+        })])
 
     return data
 
+data = get_data()
+data["Close"] = data["Close"].round(2)
+data["Change%"] = data["Change%"].round(2).astype(str)
 
-columns1 = st.empty()
-columns2 = st.empty()
-display_close = st.empty()  # vytváříme prázdný objekt k zobrazení hodnoty 'Close'
 
-while True:
-    data = get_data()
-    data["Close"] = data["Close"].round(2)
-    data["Change%"] = data["Change%"].round(2).astype(str)
 
-    # Převod na string s oddělovači tisíců
-    data["Close"] = data["Close"].apply(lambda x: '{:,}'.format(x).replace(',', ' '))
 
-    # Upravené rozložení sloupců s přidaným prázdným sloupcem
-    col1, col2, col3, col4 = columns1.columns(4)
-    col1.metric("EUR", data['Close'].iloc[0] + " CZK", data['Change%'].iloc[0] + "%")
-    # Prázdný sloupec (spacer1) pro oddělení
-    col2.metric("USD", data['Close'].iloc[1] + " CZK", data['Change%'].iloc[1] + "%")
-    col3.metric("PX - Pražská burza", data['Close'].iloc[2] + " CZK", data['Change%'].iloc[2] + "%")
-    col4.metric("ČEZ", data['Close'].iloc[3] + " CZK", data['Change%'].iloc[3] + "%")
+# Převod na string s oddělovači tisíců
+data["Close"] = data["Close"].apply(lambda x: '{:,}'.format(x).replace(',', ' '))
+data['Ticker'].iloc[0] = "EUR"
+data['Ticker'].iloc[1] = "USD"
+# data['Ticker'].iloc[2] = "PX - Pražská burza"
+data['Ticker'].iloc[2] = "ČEZ"
+data['Ticker'].iloc[3] = "Ropa Brent"
+data['Ticker'].iloc[4] = "S&P 500"
+data['Ticker'].iloc[5] = "NASDAQ"
+data['Ticker'].iloc[6] = "Bitcoin"
 
-    col1, col2, col3, col4 = columns2.columns(4)
-    col1.metric("Ropa Brent", data['Close'].iloc[4] + " $", data['Change%'].iloc[4] + "%")
-    # Prázdný sloupec (spacer2) pro oddělení
-    col2.metric("S&P 500", data['Close'].iloc[5] + " $", data['Change%'].iloc[5] + "%")
-    col3.metric("NASDAQ", data['Close'].iloc[7] + " $", data['Change%'].iloc[7] + "%")
-    col4.metric("Bitcoin", data['Close'].iloc[6] + " $", data['Change%'].iloc[6] + "%")
-    time.sleep(20)
+trend_column = st.column_config.LineChartColumn(label="Trend", width="medium")
+
+data = data[["Ticker","6mo_history","Close"]]
+
+
+st.dataframe(data, hide_index=True,column_config={"6mo_history": trend_column})  
+
+
+
+
