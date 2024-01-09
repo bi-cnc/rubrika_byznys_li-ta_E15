@@ -76,7 +76,7 @@ data['Close'].iloc[6] = data['Close'].iloc[6] + " $"
 
 
 ticker_column = st.column_config.TextColumn(label="", width="small")
-price_column = st.column_config.TextColumn(label="Aktuální cena", width="small")
+price_column = st.column_config.TextColumn(label="Aktuální kurz/cena", width="small")
 
 trend_column = st.column_config.LineChartColumn(label="Trend v posledních 6 měsících", width="large")
 
