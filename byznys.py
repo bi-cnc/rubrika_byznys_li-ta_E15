@@ -68,7 +68,7 @@ data['Ticker'].iloc[6] = "Bitcoin"
 
 trend_column = st.column_config.LineChartColumn(label="Trend", width="medium")
 
-data = data[["Ticker","6mo_history","Close"]]
+data = data[["Ticker","Close","6mo_history"]]
 
 
 st.dataframe(data, hide_index=True,column_config={"6mo_history": trend_column})  
