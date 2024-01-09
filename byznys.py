@@ -76,13 +76,14 @@ data['Close'].iloc[6] = data['Close'].iloc[6] + " $"
 
 
 ticker_column = st.column_config.TextColumn(label="", width="small")
+price_column = st.column_config.TextColumn(label="Aktuální cena", width="small")
 
 trend_column = st.column_config.LineChartColumn(label="Trend v posledních 6 měsících", width="large")
 
 data = data[["Ticker","Close","6mo_history"]]
 
 
-st.dataframe(data,width=650, hide_index=True,column_config={"Ticker":ticker_column,"6mo_history": trend_column},height=286)  
+st.dataframe(data,width=650, hide_index=True,column_config={"Ticker":ticker_column,"Close": price_column,"6mo_history": trend_column},height=286)  
 
 
 
