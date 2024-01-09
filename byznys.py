@@ -7,6 +7,25 @@ import time
 
 # CSS kód pro změnu barvy pozadí
 
+st.markdown("""
+<style>
+/* Zajištění, že div obsahující sloupce nezalamuje sloupce pod sebe */
+.css-1d391kg {
+    flex-wrap: nowrap !important;
+}
+/* Zajištění, aby se sloupce nezalamovaly pod sebe a byly poscrollitelné na malých obrazovkách */
+@media (max-width: 768px) {
+    .css-1d391kg {
+        overflow-x: auto;
+    }
+    .st-ae {
+        flex: 0 0 auto !important;
+    }
+}
+</style>
+""", unsafe_allow_html=True)
+
+
 st.set_page_config(layout="centered")
 
 st.markdown("""
