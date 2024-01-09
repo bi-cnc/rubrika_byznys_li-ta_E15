@@ -3,6 +3,8 @@ import yfinance as yf
 import pandas as pd
 import requests
 
+st.set_page_config(layout="wide")
+
 def get_data():
     # Seznam tickerů
     tickers = ["EURCZK=X", "CZK=X", "CEZ.PR", "BZ=F", "^GSPC", "^IXIC", "BTC-USD"] ## "FPXAA.PR", Prazska burza ma problem s historickymi daty na yahoo finance, ozkousim to bez a pak ji kdyztak pridam
