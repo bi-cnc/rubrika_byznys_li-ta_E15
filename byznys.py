@@ -91,5 +91,5 @@ while True:
     }
     </style>''', unsafe_allow_html=True)
 
-    time.sleep(20)
+    time.sleep(120)
 
