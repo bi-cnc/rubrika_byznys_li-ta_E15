@@ -78,7 +78,7 @@ while True:
     col4.metric("Ropa Brent", kratsi['Close'].iloc[3] + " $", kratsi['Change%'].iloc[3] + "%")
     col5.metric("S&P 500", delsi['Close'].iloc[1] + " $", delsi['Change%'].iloc[1] + "%")
     col6.metric("Bitcoin", delsi['Close'].iloc[3] + " $", delsi['Change%'].iloc[3] + "%")
-    col7.metric("PX - Pražská burza", delsi['Close'].iloc[0] + " CZK", delsi['Change%'].iloc[0] + "%")
+    col7.metric("PX", delsi['Close'].iloc[0] + " CZK", delsi['Change%'].iloc[0] + "%")
     col8.metric("NASDAQ", delsi['Close'].iloc[2] + " $", delsi['Change%'].iloc[2] + "%")
     col9.metric("Ethereum", delsi['Close'].iloc[4] + " $", delsi['Change%'].iloc[4] + "%")
 
