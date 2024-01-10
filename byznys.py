@@ -17,7 +17,7 @@ st.markdown("""
 
 def get_data():
     # Seznam tickrů
-    tickers = ["EURCZK=X", "CZK=X", "FPXAA.PR", "CEZ.PR", "BZ=F", "^GSPC","^IXIC", "BTC-USD"]
+    tickers = ["EURCZK=X", "CZK=X","CEZ.PR","BZ=F", "FPXAA.PR", "^GSPC","^IXIC", "BTC-USD","ETH-USD"]
 
     # Vytvoření prázdného dataframeu
     data = pd.DataFrame()
@@ -51,6 +51,7 @@ def get_data():
 
     return data
 
+
 columns1 = st.empty()
 columns2 = st.empty()
 columns3 = st.empty()
@@ -58,22 +59,29 @@ display_close = st.empty()  # vytváříme prázdný objekt k zobrazení hodnoty
 
 while True:
     data = get_data()
-    data["Close"] = data["Close"].round(2)
-    data["Change%"] = data["Change%"].round(2).astype(str)
+    kratsi = data.iloc[:4]
+    delsi = data.iloc[4:]
 
+    kratsi["Close"] = kratsi["Close"].round(2)
+    delsi["Close"] = delsi["Close"].round(0).astype(int)
     # Převod na string s oddělovači tisíců
-    data["Close"] = data["Close"].apply(lambda x: '{:,}'.format(x).replace(',', ' '))
+    kratsi["Close"] = kratsi["Close"].apply(lambda x: '{:,}'.format(x).replace(',', ' ')).astype(str)
+    delsi["Close"] = delsi["Close"].apply(lambda x: '{:,}'.format(x).replace(',', ' ')).astype(str)
+    kratsi["Change%"] = kratsi["Change%"].round(2).astype(str)
+    delsi["Change%"] = delsi["Change%"].round(2).astype(str)
 
     # Upravené rozložení sloupců s přidaným prázdným sloupcem
-    col1, col2, col3, col4, col5, col6, col7, col8 = columns1.columns(8)
-    col1.metric("EUR", data['Close'].iloc[0] + " CZK", data['Change%'].iloc[0] + "%")
-    col2.metric("USD", data['Close'].iloc[1] + " CZK", data['Change%'].iloc[1] + "%")
-    col3.metric("ČEZ", data['Close'].iloc[3] + " CZK", data['Change%'].iloc[3] + "%")
-    # col4.metric("PX - Pražská burza", data['Close'].iloc[2] + " CZK", data['Change%'].iloc[2] + "%")
-    col4.metric("Ropa Brent", data['Close'].iloc[4] + " $", data['Change%'].iloc[4] + "%")
-    col5.metric("S&P 500", data['Close'].iloc[5] + " $", data['Change%'].iloc[5] + "%")
-    col6.metric("NASDAQ", data['Close'].iloc[7] + " $", data['Change%'].iloc[7] + "%")
-    # col8.metric("Bitcoin", data['Close'].iloc[6] + " $", data['Change%'].iloc[6] + "%")
+    col1, col2, col3, col4, col5, col6, col7, col8, col9 = columns1.columns(9)
+    col1.metric("EUR", kratsi['Close'].iloc[0] + " CZK", kratsi['Change%'].iloc[0] + "%")
+    col2.metric("USD", kratsi['Close'].iloc[1] + " CZK", kratsi['Change%'].iloc[1] + "%")
+    col3.metric("ČEZ", kratsi['Close'].iloc[2] + " CZK", kratsi['Change%'].iloc[2] + "%")
+    col4.metric("Ropa Brent", kratsi['Close'].iloc[3] + " $", kratsi['Change%'].iloc[3] + "%")
+    col5.metric("S&P 500", delsi['Close'].iloc[1] + " $", delsi['Change%'].iloc[1] + "%")
+    col6.metric("Bitcoin", delsi['Close'].iloc[3] + " $", delsi['Change%'].iloc[3] + "%")
+    col7.metric("PX - Pražská burza", delsi['Close'].iloc[0] + " CZK", delsi['Change%'].iloc[0] + "%")
+    col8.metric("NASDAQ", delsi['Close'].iloc[2] + " $", delsi['Change%'].iloc[2] + "%")
+    col9.metric("Ethereum", delsi['Close'].iloc[4] + " $", delsi['Change%'].iloc[4] + "%")
+
     st.write('''<style>
 
     [data-testid="column"] {
@@ -84,5 +92,4 @@ while True:
     </style>''', unsafe_allow_html=True)
 
     time.sleep(20)
-
 
