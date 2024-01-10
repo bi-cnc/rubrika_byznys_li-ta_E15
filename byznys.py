@@ -83,6 +83,15 @@ while True:
     col5.metric("S&P 500", data['Close'].iloc[5] + " $", data['Change%'].iloc[5] + "%")
     col6.metric("NASDAQ", data['Close'].iloc[7] + " $", data['Change%'].iloc[7] + "%")
     # col8.metric("Bitcoin", data['Close'].iloc[6] + " $", data['Change%'].iloc[6] + "%")
+    st.write('''<style>
+
+    [data-testid="column"] {
+        width: calc(33.3333% - 1rem) !important;
+        flex: 1 1 calc(33.3333% - 1rem) !important;
+        min-width: calc(33% - 1rem) !important;
+    }
+    </style>''', unsafe_allow_html=True)
+
     time.sleep(20)
 
 
